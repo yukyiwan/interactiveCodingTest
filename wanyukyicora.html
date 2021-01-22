@@ -1,0 +1,391 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Yukyi Cora Wan - IM Build Test 2021</title>
+
+<!-- Welcome to ZIM at http://zimjs.com - Code Interactive Media Pizzazz!             -->
+<!-- ZIM runs on the HTML Canvas powered by JavaScript and CreateJS http://createjs.com -->
+<!-- Founded by Inventor Dan Zen - http://danzen.com - Canadian New Media Award Winner     -->
+<!-- ZIM is free to use. You can donate to help improve ZIM at http://zimjs.com/donate     -->
+
+<script src="https://zimjs.org/cdn/1.3.2/createjs.js"></script>
+<script src="https://zimjs.org/cdn/cat/01/zim.js"></script>
+<!-- use zimjs.com/distill for minified individual functions! -->
+
+<script>
+
+// SCALING OPTIONS
+// scaling can have values as follows with full being the default
+// "fit"    sets canvas and stage to dimensions and scales to fit inside window size
+// "outside"    sets canvas and stage to dimensions and scales to fit outside window size
+// "full"    sets stage to window size with no scaling
+// "tagID"    add canvas to HTML tag of ID - set to dimensions if provided - no scaling
+
+var scaling = "fit"; // this will resize to fit inside the screen dimensions
+var width = 1024;
+var height = 768;
+var color = silver;
+var outerColor = silver;
+var assets = ["isle.jpg"];
+var path= "assets/";
+
+// INTERACTIVE CODING 1 - BUILD TEST
+// FOUR PARTS all in this page - open book / internet / closed communication
+// TOTAL [40] - worth 10%
+// THREE HOURS + 1/2 hour grace time.
+// SEE the video here https://youtu.be/XCx_lwmEdcI
+
+// SCORED as part1
+// 1. Load in all the images in the assets folder.
+// Do not forget to add them to the Frame parameters!
+
+var frame = new Frame(scaling, width, height, color, outerColor, assets, path);
+frame.on("ready", function() {
+    zog("ready from ZIM Frame"); // logs in console (F12 - choose console)
+
+    const stage = frame.stage;
+    const stageW = frame.width;
+    const stageH = frame.height;
+
+    // USE THESE VARIABLES WHEN NEEDED BELOW
+    let pane;
+    let loader;
+    let pics;
+    let dial;
+    let button;
+
+    // PART 1 [10]
+    // Load the island backing image and title
+    // (no variables)
+
+    part1();
+    function part1() {
+
+        // 2. add the isle asset (that you have loaded into the Frame() as asset and path parameters) - checked
+        const bg = asset ("isle.jpg").addTo();
+        // 3. make a Label with the following parameters: - checked
+            // text:"Desert Isle",
+            // color:white,
+            // variant:true,
+            // backgroundColor:"lightblue"
+        // Use ske() to skew the label 10 in the x - checked
+        // set the alpha to .5 - checked
+        // and the position to 50, 50 - checked
+        // with a sha() - checked
+        // animate the label as follows: - checked
+            // from:true,
+            // props:{x:-300},
+            // time:.7,
+            // wait:.2,
+            // ease:"backOut"
+        // call part2 using the call parameter of animate - checked
+        // (to skip part2, just call part3 instead)
+
+
+        new Label({text:"Desert Isle", color:white, variant:true, backgroundColor:"lightblue"})
+        .ske(10)
+        .alp(.5)
+        .pos(50,50)
+        .sha()
+        .animate({from:true,
+        props:{x:-300},
+        time:.7,
+        wait:.2,
+        ease:"backOut",
+        call:part2
+    })
+
+    }
+
+    // PART 2 [10]
+    // Show a Pane that has a Loader inside
+    // Call the next part once files are loaded
+    // Note: you can skip this section by calling part3 above
+    // When you are all done, set the code above to call part2
+
+    // part2();
+    function part2() {
+
+        // 4. Make a Pane (store in variable pane) with the following parameters: - checked
+            // width:600,
+            // height:200,
+            // fadeTime:.7,
+            // color:pink,
+            // label:"Pick Items to Bring",
+            // corner:0,
+            // modal:false,
+            // displayClose:false
+        // Skew the pane 10 in the x - checked
+        // and use the show() method to show the pane - checked
+
+        pane = new Pane ({width:600,
+        height:200,
+        fadeTime:.7,
+        color:pink,
+        label:"Pick Items to Bring",
+        corner:0,
+        modal:false,  // modal - (default true) pane will close when user clicks off the pane - set to false to keep pane open
+        displayClose:false})
+        .ske(10)
+        .show();  // show() - shows the pane (returns the pane for chaining)
+
+
+
+
+        // 5. Use the label property of the pane - checked
+        // to mov() the label 0 in the x and -50 in the y - checked
+        // so that we have enough room to see the Loader -checked
+
+        pane.label.mov(0, -50);
+
+        // 6. Create a Loader (store in variable loader) with the following parameters: - checked
+            // width:500,
+            // label:"UPLOAD THREE IMAGES"
+        // center the loader on the pane and mov() it 0 in the x and 30 in the y - checked
+
+        loader = new Loader ({width:500,
+        label:"UPLOAD THREE IMAGES"}).center(pane).mov(0,30);
+
+        // 7. Add a loaded event to the loader and collect the event object e - checked
+        // Inside the event function, hide() the pane - checked
+        // and set a timeout of 1 second to wait for the pane to fade out - checked
+        // inside the timeout function call the part3 function - checked
+        // IMPORTANT, pass e.bitmaps to part3 function as a parameter - checked
+        // This passes an array of the uploaded images to part3 - yay!
+
+        loader.on("loaded", e=>{
+            pane.hide();
+            timeout(1,()=>{
+                part3(e.bitmaps)
+            })
+        });
+
+
+    }
+
+    // PART 3 [10]
+    // Animate in and out an instructions Label
+    // Place the images on the stage with Blob masks
+
+    // part3();
+    function part3(bitmaps) {
+
+        // 8. Make a Label with the following parameters:-checked
+            // text:"Make Collage",
+            // backgroundColor:white,
+            // variant:true,
+            // color:red
+        // set the alpha to 0 - checked
+        // ske() the label 10 in the x - checked
+        // and pos it 0, 70 from the CENTER and BOTTOM - checked
+        // animate the label as follows:-checked
+            // props:{alpha:.8},
+            // wait:1,
+            // time:.7,
+            // rewind:true,
+            // rewindWait:2
+
+        new Label({text:"Make Collage",
+        backgroundColor:white,
+        variant:true,
+        color:red})
+        .alp(0)
+        .ske(10)
+        .pos(0,70, CENTER, BOTTOM)
+        .animate({props:{alpha:.8},
+        wait:1,
+        time:.7,
+        rewind:true,
+        rewindWait:2});
+
+        // IMPORTANT
+        // 9. Use the variable pics to store the bitmaps parameter we collect in part3(bitmaps) - checked
+
+        // Note: if you want to avoid selecting pics each time you test or part2 is not done
+        // then set pics equal to an array with asset() objects for pic1, pic2 and pic3.
+        // This will allow you to test quickly with placeholder images and is recommended.
+        // When you are done, you can turn on part2 and store bitmaps in pics instead
+        // so the app will work with the selected pics rather than the placeholders.
+
+        pics = bitmaps;
+
+        // 10. Create a const locs array that holds -250, 0 and 250 - checked
+        // We will use that in the loop below to mov() the pictures and Blobs
+
+
+        const locs = [-250,0,250];
+
+        // 11. Loop through the pics array of three pics and call a function
+        // each time getting a pic and i as a parameter. - checked
+
+        // A. Inside the loop function centerReg the pic - checked
+        // and mov() the pic the value from the locs array at i. - checked
+
+        const blob=[];
+
+        loop(pics, (pic,i)=>{
+            pic.centerReg().mov(locs[i],0);
+
+
+
+
+
+        // B. We are now making a Blob for each pic as we loop.-checked
+        // Create a variable called blob and store a Blob with the following parameters: - checked
+            // points:6,
+            // color:faint,
+            // controlType:"none"
+        // center the blob and mov() it the value from the locs array at i.checked
+
+            blob[i] = new Blob({points:6,
+            color:faint,
+            controlType:"none"}).center().mov(locs[i],0);
+
+
+
+        // C. Set the mask of the pic to the blob using the setMask() method - checked
+
+            pic.setMask(blob[i]);
+
+
+
+        // D. When you mousedown on the blob call a function and inside the function - checked
+        // use the level property to set the pic level equal to the blob level-1 - checked
+        // This keeps the picture for the blob being dragged above the other blobs - checked
+
+            blob[i].on("mousedown", e=>{
+                pics[i].level = blob[i].level-1; // level - gets or sets the level of the object in its parent container (or the stage) - a property for parent.getChildIndex() and parent.setChildIndex()
+            });
+
+
+        // E. When you pressmove on the blob call a function and inside the function - checked
+        // set the loc() of pic to the blob.shape property. - checked
+        // Remember that you can use obj1.loc(obj2) where in this case obj2 is the blob.shape.-yup
+        // IMPORTANT - make sure to use blob.shape and not the blob itself - yup
+        // as when a blob is dragged it is actually the shape inside that moves
+        // and when the pressup happens, the blob x and y is shifted to match the shape.
+
+            blob[i].on("pressmove", e=>{
+                pics[i].loc(blob[i].shape);
+            });
+
+        });
+        // call part4 right away - as we do below - ok
+        stage.update();
+        part4();
+    }
+
+
+    // PART 4 [10]
+    // Animate on the Interface
+    // A Dial to adjust the scale of the images
+    // and a Button to save the collage with the Loader
+    // This last part will need the Loader to be made and part2 run
+
+    // part4();
+    function part4() {
+
+        // 12. Make a Dial (store in variable dial) with the following parameters:-checked
+            // backgroundColor:green,
+            // min:.5,
+            // max:2.5,
+            // step:0,
+            // currentValue:1
+        // Position the dial at 50, 50 at RIGHT and BOTTOM - checked
+        // animate the dial in with the following parameters:-checked
+            // from:true,
+            // wait:2,
+            // props:{x:stageW+200},
+            // time:.7,
+            // ease:"backOut"
+        // Call a change() on the Dial - checked
+        // In the change function loop through the pics and call a function each time collecting a pic - checked
+        // and in the function set the sca() of the pic to the dial currentValue - checked
+        // After the loop, update the stage
+
+        dial = new Dial({backgroundColor:green,
+        min:.5,
+        max:2.5,
+        step:0,
+        currentValue:1})
+        .pos(50,50,RIGHT,BOTTOM)
+        .animate({from:true,
+        wait:2,
+        props:{x:stageW+200},
+        time:.7,
+        ease:"backOut"})
+        .change(e=>{
+            loop(pics, (pic)=>{
+                pic.sca(dial.currentValue)
+            });
+            // for (i=0; i<pics.length; i++){
+            // pics[i].sca(dial.currentValue)}
+            stage.update();
+        });
+
+
+        // 13. Add a button (store in variable button) with the following parameters:-checked
+            // width:150,
+            // height:100,
+            // backgroundColor:green,
+            // rollBackgroundColor:purple,
+            // label:"SAVE",
+            // corner:10
+        // Scale the button .8 and position it at 70, 60 from the LEFT, BOTTOM - checked
+        // animate the button as follows: - checked
+            // from:true,
+            // wait:2,
+            // props:{x:-200},
+            // time:.7,
+            // ease:"backOut"
+        // Add a tap() to the button - checked
+        // In the tap function remove the dial and the button from the stage - checked
+        // Call the save() method of the loader passing it the stage and the string "isle" -checked
+        // (this will require the loader is made and part2 is being run) - checked
+        // Add the dial and button back to the stage. - checked
+        // This means when the collage image is saved it will not show the dial and the button!
+        // How cool is this! (if it works) -yay!!
+
+        button = new Button({width:150,
+        height:100,
+        backgroundColor:green,
+        rollBackgroundColor:purple,
+        label:"SAVE",
+        corner:10})
+        .sca(.8)
+        .pos(70,60,LEFT, BOTTOM)
+        .animate({from:true,
+        wait:2,
+        props:{x:-200},
+        time:.7,
+        ease:"backOut"})
+        .tap(e=>{
+            dial.removeFrom();
+            button.removeFrom();
+            loader.save(stage,"isle")
+            dial.loc(dial);
+            button.loc(button);
+        });
+
+    }
+
+    // 14.  Breath a sigh of relief - it is over!
+    // Consider that you have just made an app that very few people in the world could make in THREE hours.
+    // Congratulations!
+
+
+    stage.update(); // this is needed to show any changes
+
+}); // end of ready
+
+</script>
+
+<meta name="viewport" content="width=device-width, user-scalable=no" />
+
+</head>
+
+<body>
+<!-- canvas with id="myCanvas" is made by zim Frame -->
+</body>
+</html>
